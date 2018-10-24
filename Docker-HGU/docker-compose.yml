@@ -1,0 +1,54 @@
+db:
+  build: ./mysql
+  restart: always
+  expose:
+    - "3306"
+  volumes:
+    - ./mysql:/var/lib/mysql
+  ports:
+    - "3307:3306"
+  environment:
+    - MYSQL_DATABASE=testdb
+    - MYSQL_ROOT_PASSWORD=root
+
+web:
+  restart: always
+  build: ./mysite
+  command: uwsgi --ini ./mysite/mysite_uwsgi.ini
+  expose:
+    - "9090"
+  ports:
+    - "9090:9090"
+  volumes:
+    - .:/www
+  links:
+    - db 
+nginx:
+  restart: always
+  build: ./nginx
+  expose: 
+    - "8092"
+    - "80"
+  ports:
+    - "8080:8092"
+    - "8081:80"
+  volumes:
+    - ./mysite/www/:/root/vixtel/www/
+    - ./nginx/conf.d/:/etc/nginx/conf.d/
+    - ./nginx/nginx.conf/:/etc/nginx/nginx.conf
+  links:
+    - web
+    
+  
+    
+    
+  
+
+
+
+
+
+
+ 
+
+
