@@ -1,2 +1,2 @@
 # Data-Mining-Tool
-数据分析工具
+基于django后端的数据分析工具
